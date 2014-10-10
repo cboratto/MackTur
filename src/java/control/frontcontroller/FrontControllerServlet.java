@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package macktur.control;
+package control.frontcontroller;
 
+import control.base.ApplicationController;
+import control.base.ApplicationControllerFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -13,27 +15,34 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import macktur.modelo.Cliente;
-import macktur.persistencia.ClienteBD;
 
 /**
  *
  * @author caioboratto
  */
-@WebServlet(name = "SaveSelectedFlightServlet", urlPatterns = {"/SaveSelectedFlightServlet"})
-public class SaveSelectedFlightServlet extends HttpServlet {
+@WebServlet(name = "FrontControllerServlet", urlPatterns = {"/FrontControllerServlet"})
+public class FrontControllerServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        RequestDispatcher rd;
+        try {
+            // obtém o nome do controlador
+            String controller = request.getParameter("control");
+            // instancia a classe do controlador
+            ApplicationController control;
+            control = ApplicationControllerFactory.getControllerByFullClassName(controller);
+            // inicializa o controlador
+            control.init(request);
 
-        String radio = request.getParameter("voo");
-        request.setAttribute("voo", radio);
-        request.getSession().setAttribute("voo", radio);
-        rd = request.getRequestDispatcher("/CadastrarCliente.jsp");
+            control.execute();
+            RequestDispatcher requestDispatcher;
+            requestDispatcher = getServletContext().getRequestDispatcher(control.getReturnPage());
+            requestDispatcher.forward(request, response);
 
-        rd.forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
