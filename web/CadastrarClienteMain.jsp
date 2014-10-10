@@ -16,7 +16,7 @@
         <h1>Formulário de Cadastro do Cliente</h1>
         <%
             Cliente cliente = (Cliente) request.getAttribute("cliente");
-            String vooSelecionado = (String) request.getAttribute("voo_selecionado");
+            String vooSelecionado = (String) request.getAttribute("voo");
             
             String readonly;
             String nome = "";
