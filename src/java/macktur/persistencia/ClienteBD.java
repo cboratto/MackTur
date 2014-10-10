@@ -25,7 +25,8 @@ public class ClienteBD {
 
             String query = "select c.IDT_CLIENTE,"
                     + "p.NAM_PESSOA, "
-                    + "p.CPF "
+                    + "p.CPF, "
+                    + "c.email "
                     + "from pessoa p "
                     + "join cliente c "
                     + "on p.IDT_PESSOA=c.idt_cliente where p.cpf = ?";
@@ -37,10 +38,9 @@ public class ClienteBD {
             ResultSet rs = select.executeQuery();
 
             while (rs.next()) {
-                c = new Cliente();  
-                Pessoa p = new Pessoa(rs.getString("nam_pessoa"), rs.getInt("idt_cliente"), rs.getString("cpf"));
 
-                c.setPessoa(p);
+                Pessoa p = new Pessoa(rs.getString("nam_pessoa"), rs.getInt("idt_cliente"), rs.getString("cpf"));
+                c = new Cliente(p, rs.getString("email"));
 
             }
         } catch (ClassNotFoundException e) {

@@ -15,10 +15,14 @@
     </head>
     <body>
         <h1>Cadastrar Cliente</h1>
-        <form method="POST" action="/MackTur/CadastrarClienteServlet">
+        <%
+            String vooSelecionado = (String) request.getAttribute("voo");
+            request.setAttribute("voo", vooSelecionado);
+        %>
+        <form method="POST" action="/MackTur/BuscarClienteServlet">
             <p>CPF <input type="text" name="cpf"></p>
             <p><input type="submit"></p>
         </form>
-        
+
     </body>
 </html>

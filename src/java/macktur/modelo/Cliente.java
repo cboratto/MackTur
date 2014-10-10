@@ -12,8 +12,19 @@ package macktur.modelo;
 public class Cliente {
 
     Pessoa pessoa;
+    String email;
 
-    public Cliente() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Cliente(Pessoa p, String email) {
+        this.pessoa = p;
+        this.email = email;
     }
 
     public Pessoa getPessoa() {

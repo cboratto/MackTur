@@ -16,14 +16,19 @@
         <h1>Formulário de Cadastro do Cliente</h1>
         <%
             Cliente cliente = (Cliente) request.getAttribute("cliente");
+            String vooSelecionado = (String) request.getAttribute("voo_selecionado");
+            
             String readonly;
             String nome = "";
             String CPF = "";
+            String email = "";
             if (cliente != null) {
                 request.setAttribute("cliente_existe", "1");
                 readonly = "true";
                 nome = cliente.getPessoa().getNome();
                 CPF = cliente.getPessoa().getCpf();
+                email = cliente.getEmail();
+                
             } else {
                 request.setAttribute("cliente_existe", "0");
                 readonly = "false";
@@ -34,6 +39,7 @@
         <form method="POST" >
             <p>Nome Cliente <input name="nome" type="text" value=<%=nome%> <%if (readonly.equals("true")) { %> readonly=<%}%>> </p>
             <p>CPF <input name="cpf" type="text" value=<%=CPF%> <%if (readonly.equals("true")) { %> readonly=<%}%>></p>
+            <p>Email <input name="email" type="text" value=<%=email%> <%if (readonly.equals("true")) { %> readonly=<%}%>></p>
             <p><input type="submit"></p>
         </form>
 

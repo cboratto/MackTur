@@ -20,30 +20,31 @@ import macktur.persistencia.ClienteBD;
  *
  * @author caioboratto
  */
-@WebServlet(name = "CadastrarClienteServlet", urlPatterns = {"/CadastrarClienteServlet"})
-public class CadastrarClienteServlet extends HttpServlet {
+@WebServlet(name = "SaveSelectedFlightServlet", urlPatterns = {"/SaveSelectedFlightServlet"})
+public class SaveSelectedFlightServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
         RequestDispatcher rd;
-        String cpf = request.getParameter("cpf");
-        String radio = request.getParameter("radio1");
-        
-        ClienteBD clientebd = new ClienteBD();
 
-        Cliente cliente = clientebd.buscaCliente(cpf);
-        
-        if (cliente != null) {
-            //cliente existe na base
-            request.setAttribute("cliente", cliente);
-        }
-        rd = request.getRequestDispatcher("/CadastrarClienteMain.jsp");
-        
+        String radio = request.getParameter("voo");
+        request.setAttribute("voo", radio);
+
+        rd = request.getRequestDispatcher("/CadastrarCliente.jsp");
+
         rd.forward(request, response);
     }
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

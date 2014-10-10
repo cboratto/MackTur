@@ -15,7 +15,7 @@
     </head>
     <body>
         <h1>Lista de Voos</h1>
-        <form method="POST" action="CadastrarCliente.jsp">
+        <form method="POST" action="/MackTur/SaveSelectedFlightServlet">
             <table border="1">
                 <tr><th>Nome Voo</th><th>Origem</th><th>Destino</th><th>Data Partida</th><th>Data Chegada</th>
                     <th>Nome Aviao</th><th>Assentos Disponiveis</th></tr>
@@ -39,8 +39,8 @@
                     <td><%=dataChegada%></td>
                     <td><%=v.getAviao().getNomeAviao()%></td>
                     <td><%=v.getAviao().getAviaoTipo().getNumAssentos()-v.getNumAssentosUtilizados()%></td>
-                    <td><input type="radio" name="radio1" value=<%=idt%>></td>
-                </tr>
+                    <td><input type="radio" name="voo" value=<%=idt%>></td>
+                    </tr>
                 <%
                     }
                 %>
