@@ -15,11 +15,7 @@
     </head>
     <body>
         <h1>Cadastrar Cliente</h1>
-        <%
-            String vooSelecionado = (String) request.getAttribute("voo");
-            request.setAttribute("voo", vooSelecionado);
-        %>
-        <form method="POST" action="/MackTur/BuscarClienteServlet">
+        <form method="POST" action="/MackTur/FrontControllerServlet?control=BuscarClienteServlet">
             <p>CPF <input type="text" name="cpf"></p>
             <p><input type="submit"></p>
         </form>

@@ -32,7 +32,7 @@ public class ApplicationControllerFactory {
 
     public static final ApplicationController getControllerByFullClassName(String className) {
         try {
-            String name = "hotelaria.controle.appcontrollers." + className + "Controller";
+            String name = "macktur.control." + className ;
             Class actionClass = Class.forName(name);
             return getControllerByClass(actionClass);
         } catch (ClassNotFoundException e) {

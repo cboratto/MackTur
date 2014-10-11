@@ -53,7 +53,7 @@ public class VooBD {
                     + " on av.IDT_AVIAO = v.IDT_AVIAO\n "
                     + " join macktur.AVIAO_TIPO avt \n "
                     + " on avt.IDT_AVIAO_TIPO = av.IDT_AVIAO_TIPO\n "
-                    + " where '" + datainicio + "' between vr.DAT_PARTIDA and vr.NAM_DESTINO \n "
+                    + " where '" + datainicio + "' between vr.DAT_PARTIDA and vr.DAT_CHEGADA \n "
                     + " and  vr.nam_origem= ? \n "
                     + " and  vr.nam_destino= ? \n "
                     + " and  avt.NUM_ASSENTO-v.NUM_ASSENTOS_UTILIZADOS > 0";
