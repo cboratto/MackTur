@@ -11,8 +11,17 @@ package macktur.modelo;
  */
 public class Cliente {
 
+    int id;
     Pessoa pessoa;
     String email;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;

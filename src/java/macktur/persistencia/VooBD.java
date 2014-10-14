@@ -72,20 +72,19 @@ public class VooBD {
                 //Cria o TIPO AVIAO
                 AviaoTipo aviaoTipo = new AviaoTipo(1, rs.getString("nome_tipo"), rs.getInt("num_assento"));
                 //Cria o AVIAO
-                Aviao aviao = new Aviao(0,null,rs.getString("nome_aviao"));
+                Aviao aviao = new Aviao(0, null, rs.getString("nome_aviao"));
                 //Associa
                 aviao.setAviaoTipo(aviaoTipo);
-                
+
                 v.setNomeVoo(rs.getString("nam_voo"));
-                v.setIdentificadorVoo(rs.getInt("idt_voo"));
+                v.setId(rs.getInt("idt_voo"));
                 v.setNumAssentosUtilizados(rs.getInt("num_assentos_utilizados"));
 
                 r.setOrigem(rs.getString("nam_origem"));
                 r.setDestino(rs.getString("nam_destino"));
                 r.setDataPartida(rs.getString("dat_partida"));
                 r.setDateChegada(rs.getString("dat_chegada"));
-                
-                
+
                 v.setRota(r);
                 v.setAviao(aviao);
                 //coloca na lista
@@ -94,7 +93,7 @@ public class VooBD {
             }
         } catch (ClassNotFoundException e) {
             System.err.println("erro carregando driver: " + e);
-        } 
+        }
         return voos;
     }
 
@@ -128,7 +127,7 @@ public class VooBD {
                 Rota r = new Rota();
 
                 v.setNomeVoo(rs.getString("nam_voo"));
-                v.setIdentificadorVoo(rs.getInt("idt_voo"));
+                v.setId(rs.getInt("idt_voo"));
 
                 r.setOrigem(rs.getString("nam_origem"));
                 r.setDestino(rs.getString("nam_destino"));

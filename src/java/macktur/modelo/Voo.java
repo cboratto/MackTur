@@ -11,6 +11,7 @@ package macktur.modelo;
  */
 public class Voo {
 
+    int id;
     String nomeVoo;
     int IdentificardorVoo;
     int numAssentosUtilizados;
@@ -21,20 +22,20 @@ public class Voo {
     public Voo() {
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getNomeVoo() {
         return nomeVoo;
     }
 
     public void setNomeVoo(String nomeVoo) {
         this.nomeVoo = nomeVoo;
-    }
-
-    public int getIdentificadorVoo() {
-        return IdentificardorVoo;
-    }
-
-    public void setIdentificadorVoo(int idt_voo) {
-        this.IdentificardorVoo = idt_voo;
     }
 
     public Rota getRota() {
