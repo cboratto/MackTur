@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package macktur.DAO;
 
 import java.sql.Connection;
@@ -12,15 +11,38 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import macktur.modelo.Cliente;
-
+import macktur.modelo.Pessoa;
 
 public class ClienteDAOImpl implements ClienteDAO {
 
-  protected static final String CAMPOS = "id, nome, logradouro, numero";
-    protected static String INSERIR_SQL = "insert into app.cliente (" + CAMPOS + ") values (?, ?, ?)";
-    protected static String SELECT_ALL_SQL = "select " + CAMPOS + " from app.cliente";
-    protected static String UPDATE_SQL = "update app.cliente set nome= ?, logradouro=?, numero=? where id=?";
+    protected static final String CAMPOS_CLIENTE = "id_cliente, dat_cadastro, email";
+    protected static String INSERIR_CLIENTE_SQL = "insert into cliente (idt_cliente, dat_cadastro, email) values (?, ?, ?)";
+    protected static String SELECT_ALL_SQL = "select c.idt_cliente, "
+            + "c.dat_cadastro, "
+            + "c.email,"
+            + "p.nam_pessoa,"
+            + "p.cpf,"
+            + "p.dat_nascimento"
+            + " from cliente c "
+            + "join pessoa p "
+            + "on c.idt_cliente=p.idt_pessoa ";
+    
+    protected static String SELECT_CPF_SQL = "select c.idt_cliente, "
+            + "c.dat_cadastro, "
+            + "c.email,"
+            + "p.nam_pessoa,"
+            + "p.cpf,"
+            + "p.dat_nascimento"
+            + " from macktur.cliente c "
+            + "join macktur.pessoa p "
+            + "on c.idt_cliente=p.idt_pessoa "
+            + "where  p.cpf = ?";
+    protected static String UPDATE_PESSOA_SQL = "update app.pessoa set nam_pessoa= ?, dat_nascimento=?, cpf=? where idt_pessoa=?";
+    protected static String UPDATE_CLIENTE_SQL = "update app.pessoa set nam_pessoa= ?, dat_nascimento=?, cpf=? where idt_pessoa=?";
     protected static String DELETE_SQL = "delete from app.cliente where id=? ";
+
+    protected static final String CAMPOS_PESSOA = "nam_pessoa, dat_nascimento, cpf";
+    protected static String INSERIR_PESSOA_SQL = "insert into pessoa (" + CAMPOS_PESSOA + ") values (?, ?, ?)";
 
     public ClienteDAOImpl() {
     }
@@ -31,11 +53,26 @@ public class ClienteDAOImpl implements ClienteDAO {
         PreparedStatement prepStmt = null;
         try {
             conn = Conexao.getInstance().getConnection();
-            prepStmt = conn.prepareStatement(INSERIR_SQL);
-            prepStmt.setString(1, cliente.getNome());
-            prepStmt.setString(2, cliente.getLogradouro());
-            prepStmt.setInt(3, cliente.getNumero());
+            //Inserir a pessoa primeiramente
+            prepStmt = conn.prepareStatement(INSERIR_PESSOA_SQL);
+            prepStmt.setString(1, cliente.getPessoa().getNome());
+            prepStmt.setString(2, cliente.getPessoa().getDataNascimento());
+            prepStmt.setString(3, cliente.getPessoa().getCpf());
             prepStmt.executeUpdate();
+            Integer i = null;
+            ResultSet rs = prepStmt.getGeneratedKeys();
+            while (rs.next()){
+                i = rs.getInt(1);
+            }
+            
+            //Inserir cliente - repete o mesmo prepStmt
+            prepStmt = conn.prepareStatement(INSERIR_CLIENTE_SQL);
+            prepStmt.setInt(1, i);
+            prepStmt.setString(2, cliente.getDataCadastro());
+            prepStmt.setString(3, cliente.getEmail());
+
+            prepStmt.executeUpdate();
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,19 +81,7 @@ public class ClienteDAOImpl implements ClienteDAO {
     @Override
     public void update(Cliente cliente
     ) {
-        Connection conn = null;
-        PreparedStatement prepStmt = null;
-        try {
-            conn = Conexao.getInstance().getConnection();
-            prepStmt = conn.prepareStatement(UPDATE_SQL);
-            prepStmt.setString(1, cliente.getNome());
-            prepStmt.setString(2, cliente.getLogradouro());
-            prepStmt.setInt(3, cliente.getNumero());
-            prepStmt.setLong(4, cliente.getId());
-            prepStmt.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
@@ -78,7 +103,8 @@ public class ClienteDAOImpl implements ClienteDAO {
     public List<Cliente> select() {
         List<Cliente> clientes = new ArrayList<Cliente>();
 
-        Cliente cliente = null;
+        Cliente cliente = new Cliente();
+
         PreparedStatement prepStmt = null;
         ResultSet rs = null;
         try {
@@ -86,13 +112,17 @@ public class ClienteDAOImpl implements ClienteDAO {
             prepStmt = conn.prepareStatement(SELECT_ALL_SQL);
             rs = prepStmt.executeQuery();
             while (rs.next()) {
-                cliente = new Cliente();
 
-                cliente.setId(rs.getLong("id"));
-                cliente.setNome(rs.getString("nome"));
-                cliente.setLogradouro(rs.getString("logradouro"));
-                cliente.setNumero(rs.getInt("numero"));
+                Pessoa pessoa = new Pessoa();
 
+                pessoa.setNome(rs.getString(("nam_pessoa")));
+                pessoa.setCpf(rs.getString("cpf"));
+
+                cliente.setEmail(rs.getString("email"));
+                cliente.setId(rs.getInt("idt_cliente"));
+
+                cliente.setPessoa(pessoa);
+                
                 clientes.add(cliente);
             }
         } catch (Exception e) {
@@ -101,5 +131,34 @@ public class ClienteDAOImpl implements ClienteDAO {
 
         return clientes;
     }
-    
+
+    public Cliente findCPF(String cpf) {
+        Cliente cliente = new Cliente();
+
+        PreparedStatement prepStmt = null;
+        ResultSet rs = null;
+        try {
+            Connection conn = Conexao.getInstance().getConnection();
+            prepStmt = conn.prepareStatement(SELECT_CPF_SQL);
+            rs = prepStmt.executeQuery();
+            while (rs.next()) {
+                Pessoa pessoa = new Pessoa();
+
+                pessoa.setNome(rs.getString(("nam_pessoa")));
+                pessoa.setCpf(rs.getString("cpf"));
+                pessoa.setDataNascimento(rs.getString("dat_nascimento"));
+
+                cliente.setEmail(rs.getString("email"));
+                cliente.setDataCadastro(rs.getString("dat_cadastro"));
+                cliente.setId(rs.getInt("idt_cliente"));
+
+                cliente.setPessoa(pessoa);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new Cliente();
+    }
+
 }

@@ -5,6 +5,7 @@ public class Pessoa {
     int id;
     String nome;
     String cpf;
+    String dataNascimento;
 
     public Pessoa(String nome, int id, String cpf) {
         this.nome = nome;
@@ -13,7 +14,15 @@ public class Pessoa {
     }
 
     public Pessoa() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+    }
+
+    public String getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(String dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
     public int getId() {

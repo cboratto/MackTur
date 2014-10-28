@@ -27,7 +27,7 @@
                                 String destino = v.getRota().getDestino();
                                 String dataOrigem = v.getRota().getDataPartida();
                                 String dataChegada = v.getRota().getDateChegada();
-                                int idt = v.getIdentificadorVoo();
+                                int idt = v.getId();
                                 
                                
                         %>

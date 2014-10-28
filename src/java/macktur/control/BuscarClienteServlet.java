@@ -6,6 +6,8 @@
 package macktur.control;
 
 import control.base.AbstractApplicationController;
+import macktur.DAO.ClienteDAO;
+import macktur.DAO.ClienteDAOImpl;
 import macktur.modelo.Cliente;
 import macktur.persistencia.ClienteBD;
 
@@ -21,9 +23,10 @@ public class BuscarClienteServlet extends AbstractApplicationController {
         String cpf = getRequest().getParameter("cpf");
         String radio = getRequest().getParameter("voo");
 
-        ClienteBD clientebd = new ClienteBD();
+        
+        ClienteDAOImpl clientebd = new ClienteDAOImpl();
 
-        Cliente cliente = clientebd.buscaCliente(cpf);
+        Cliente cliente = clientebd.findCPF(cpf);
 
         if (cliente != null) {
             //cliente existe na base

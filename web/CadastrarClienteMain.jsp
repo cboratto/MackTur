@@ -4,6 +4,9 @@
     Author     : caioboratto
 --%>
 
+<%@page import="java.util.Calendar"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="macktur.modelo.Cliente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -22,13 +25,21 @@
             String nome = "";
             String CPF = "";
             String email = "";
+            String dataNascimento="";
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date dat = new Date();            
+            String dataCadastro = dateFormat.format(dat);
+            
             if (cliente != null) {
                 request.setAttribute("cliente_existe", "1");
                 readonly = "true";
+                //Pessoa
                 nome = cliente.getPessoa().getNome();
                 CPF = cliente.getPessoa().getCpf();
+                dataNascimento = cliente.getPessoa().getDataNascimento();
+                //Cliente
                 email = cliente.getEmail();
-                
+                dataCadastro = cliente.getDataCadastro();
             } else {
                 request.setAttribute("cliente_existe", "0");
                 readonly = "false";
@@ -37,9 +48,14 @@
         %>
         <h3><%if(cliente!=null){ %>Cliente já cadastrado <% } %></h3>
         <form method="POST" >
+            <h3>Informações de Pessoa</h3>
+            
             <p>Nome Cliente <input name="nome" type="text" value=<%=nome%> <%if (readonly.equals("true")) { %> readonly=<%}%>> </p>
             <p>CPF <input name="cpf" type="text" value=<%=CPF%> <%if (readonly.equals("true")) { %> readonly=<%}%>></p>
+            <p>Data Nascimento <input name="dat_nasc" type="text" value=<%=dataNascimento%> <%if (readonly.equals("true")) { %> readonly=<%}%>></p>
+            <h3>Informações de Cliente</h3>
             <p>Email <input name="email" type="text" value=<%=email%> <%if (readonly.equals("true")) { %> readonly=<%}%>></p>
+            <p>Data de Cadastro <input name="dat_cadastro" type="text" value=<%=dataCadastro%> readonly></p>
             <p><input type="submit"></p>
         </form>
 

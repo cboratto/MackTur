@@ -14,6 +14,15 @@ public class Cliente {
     int id;
     Pessoa pessoa;
     String email;
+    String dataCadastro;
+
+    public String getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(String dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
 
     public int getId() {
         return id;
@@ -31,6 +40,8 @@ public class Cliente {
         this.email = email;
     }
 
+    public Cliente(){}
+    
     public Cliente(Pessoa p, String email) {
         this.pessoa = p;
         this.email = email;
