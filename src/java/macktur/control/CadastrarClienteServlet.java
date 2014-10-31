@@ -6,7 +6,10 @@
 package macktur.control;
 
 import control.base.AbstractApplicationController;
+import macktur.DAO.ClienteDAO;
+import macktur.DAO.ClienteDAOImpl;
 import macktur.modelo.Cliente;
+import macktur.modelo.Pessoa;
 import macktur.persistencia.ClienteBD;
 
 public class CadastrarClienteServlet extends AbstractApplicationController {
@@ -15,20 +18,23 @@ public class CadastrarClienteServlet extends AbstractApplicationController {
     public void execute() {
 
         //Parametro que identifica se o usuário já existe na base
-        String usuarioExiste = getRequest().getParameter("cliente_existe");
+        String usuarioExiste = (String) getRequest().getSession().getAttribute("cliente_existe");
         //Dados de cadastro do usuario
-        String nomeUsuario = getRequest().getParameter("nome");
-        String cpfUsuario = getRequest().getParameter("cpf");
-        String emailUsuario = getRequest().getParameter("email");
+        Cliente cliente = new Cliente();
+        Pessoa  pessoa  = new Pessoa();
+        pessoa.setNome(getRequest().getParameter("nome"));
+        pessoa.setCpf(getRequest().getParameter("cpf"));
+        cliente.setEmail(getRequest().getParameter("email"));
         //Voo escolhido
-        String vooEscolhido = getRequest().getParameter("voo");
+        String vooEscolhido = (String) getRequest().getSession().getAttribute("vooSelecionado");
 
-        Cliente cliente = null;
-        ClienteBD clientebd = new ClienteBD();
+        
+        
+        ClienteDAO clientebd = new ClienteDAOImpl();
 
         if (usuarioExiste.equals("0")) {
-            
-        }
+            clientebd.insert(cliente);
+        } 
         this.setReturnPage("/CadastrarCliente.jsp");
 
     }

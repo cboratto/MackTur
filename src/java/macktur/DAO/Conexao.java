@@ -18,6 +18,6 @@ public class Conexao {
 
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("org.apache.derby.jdbc.ClientDriver");
-        return DriverManager.getConnection("jdbc:derby://localhost:1527/Hotelaria", "APP", "APP");
+        return DriverManager.getConnection("jdbc:derby://localhost:1527/mack01", "macktur", "macktur");
     }
 }

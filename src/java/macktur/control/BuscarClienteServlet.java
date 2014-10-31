@@ -21,18 +21,12 @@ public class BuscarClienteServlet extends AbstractApplicationController {
     public void execute() {
 
         String cpf = getRequest().getParameter("cpf");
-        String radio = getRequest().getParameter("voo");
-
-        
         ClienteDAOImpl clientebd = new ClienteDAOImpl();
 
         Cliente cliente = clientebd.findCPF(cpf);
 
-        if (cliente != null) {
-            //cliente existe na base
-            getRequest().setAttribute("cliente", cliente);
-            getRequest().setAttribute("voo", radio);
-        }
+        //cliente existe na base
+        getRequest().setAttribute("cliente", cliente);
 
         this.setReturnPage("/CadastrarClienteMain.jsp");
 

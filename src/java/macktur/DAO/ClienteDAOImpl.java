@@ -110,6 +110,7 @@ public class ClienteDAOImpl implements ClienteDAO {
         try {
             Connection conn = Conexao.getInstance().getConnection();
             prepStmt = conn.prepareStatement(SELECT_ALL_SQL);
+            
             rs = prepStmt.executeQuery();
             while (rs.next()) {
 
@@ -140,6 +141,7 @@ public class ClienteDAOImpl implements ClienteDAO {
         try {
             Connection conn = Conexao.getInstance().getConnection();
             prepStmt = conn.prepareStatement(SELECT_CPF_SQL);
+            prepStmt.setString(1, cpf);
             rs = prepStmt.executeQuery();
             while (rs.next()) {
                 Pessoa pessoa = new Pessoa();
@@ -158,7 +160,7 @@ public class ClienteDAOImpl implements ClienteDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new Cliente();
+        return cliente;
     }
 
 }

@@ -30,8 +30,8 @@
             Date dat = new Date();            
             String dataCadastro = dateFormat.format(dat);
             
-            if (cliente != null) {
-                request.setAttribute("cliente_existe", "1");
+            if (cliente.getPessoa() != null) {
+                request.getSession().setAttribute("cliente_existe", "1");
                 readonly = "true";
                 //Pessoa
                 nome = cliente.getPessoa().getNome();
@@ -41,13 +41,13 @@
                 email = cliente.getEmail();
                 dataCadastro = cliente.getDataCadastro();
             } else {
-                request.setAttribute("cliente_existe", "0");
+                request.getSession().setAttribute("cliente_existe", "0");
                 readonly = "false";
             }
 
         %>
-        <h3><%if(cliente!=null){ %>Cliente já cadastrado <% } %></h3>
-        <form method="POST" >
+        <h3><%if(cliente.getPessoa()!=null){ %>Cliente já cadastrado <% } %></h3>
+        <form method="POST" action="/MackTur/FrontControllerServlet?control=CadastrarClienteServlet">
             <h3>Informações de Pessoa</h3>
             
             <p>Nome Cliente <input name="nome" type="text" value=<%=nome%> <%if (readonly.equals("true")) { %> readonly=<%}%>> </p>
