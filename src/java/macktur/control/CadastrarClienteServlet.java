@@ -8,8 +8,13 @@ package macktur.control;
 import control.base.AbstractApplicationController;
 import macktur.DAO.ClienteDAO;
 import macktur.DAO.ClienteDAOImpl;
+import macktur.DAO.ReservaDAO;
+import macktur.DAO.ReservaDAOImpl;
 import macktur.modelo.Cliente;
+import macktur.modelo.ETicket;
 import macktur.modelo.Pessoa;
+import macktur.modelo.Reserva;
+import macktur.modelo.Voo;
 import macktur.persistencia.ClienteBD;
 
 public class CadastrarClienteServlet extends AbstractApplicationController {
@@ -25,17 +30,33 @@ public class CadastrarClienteServlet extends AbstractApplicationController {
         pessoa.setNome(getRequest().getParameter("nome"));
         pessoa.setCpf(getRequest().getParameter("cpf"));
         cliente.setEmail(getRequest().getParameter("email"));
+        cliente.setPessoa(pessoa);
+        
         //Voo escolhido
-        String vooEscolhido = (String) getRequest().getSession().getAttribute("vooSelecionado");
-
+        Voo voo = new Voo();
+        voo.setId(Integer.parseInt((String) getRequest().getSession().getAttribute("vooSelecionado")));
         
-        
-        ClienteDAO clientebd = new ClienteDAOImpl();
-
+        ClienteDAOImpl clientebd = new ClienteDAOImpl();
+        //retorna o id do usuario
         if (usuarioExiste.equals("0")) {
             clientebd.insert(cliente);
-        } 
-        this.setReturnPage("/CadastrarCliente.jsp");
+        }
+        else {
+            String cpf = cliente.getPessoa().getCpf();
+            cliente = clientebd.findCPF(cpf); 
+        }
+        //temos o id do voo escolhido
+        //instanciamos a reserva
+        Reserva reserva = new Reserva();
+        ReservaDAOImpl reservabd = new ReservaDAOImpl();
+        
+        reserva.setCliente(cliente);
+        reserva.setVoo(voo);
+        
+        ETicket eticket = reservabd.insertEticket(reserva);
+        
+        this.getRequest().setAttribute("eticket", eticket);
+        this.setReturnPage("/Efetua_Reserva.jsp");
 
     }
 

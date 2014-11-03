@@ -12,5 +12,5 @@ import macktur.modelo.Reserva;
  * @author caioboratto
  */
 public interface ReservaDAO extends DAOGeneric<Reserva> {
-
+    
 }

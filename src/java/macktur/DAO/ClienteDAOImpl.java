@@ -8,6 +8,7 @@ package macktur.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import macktur.modelo.Cliente;
@@ -26,7 +27,7 @@ public class ClienteDAOImpl implements ClienteDAO {
             + " from cliente c "
             + "join pessoa p "
             + "on c.idt_cliente=p.idt_pessoa ";
-    
+
     protected static String SELECT_CPF_SQL = "select c.idt_cliente, "
             + "c.dat_cadastro, "
             + "c.email,"
@@ -54,17 +55,15 @@ public class ClienteDAOImpl implements ClienteDAO {
         try {
             conn = Conexao.getInstance().getConnection();
             //Inserir a pessoa primeiramente
-            prepStmt = conn.prepareStatement(INSERIR_PESSOA_SQL);
+            prepStmt = conn.prepareStatement(INSERIR_PESSOA_SQL, Statement.RETURN_GENERATED_KEYS);
             prepStmt.setString(1, cliente.getPessoa().getNome());
             prepStmt.setString(2, cliente.getPessoa().getDataNascimento());
             prepStmt.setString(3, cliente.getPessoa().getCpf());
             prepStmt.executeUpdate();
             Integer i = null;
             ResultSet rs = prepStmt.getGeneratedKeys();
-            while (rs.next()){
-                i = rs.getInt(1);
-            }
-            
+            i = rs.getInt(1);
+
             //Inserir cliente - repete o mesmo prepStmt
             prepStmt = conn.prepareStatement(INSERIR_CLIENTE_SQL);
             prepStmt.setInt(1, i);
@@ -72,7 +71,7 @@ public class ClienteDAOImpl implements ClienteDAO {
             prepStmt.setString(3, cliente.getEmail());
 
             prepStmt.executeUpdate();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -110,7 +109,7 @@ public class ClienteDAOImpl implements ClienteDAO {
         try {
             Connection conn = Conexao.getInstance().getConnection();
             prepStmt = conn.prepareStatement(SELECT_ALL_SQL);
-            
+
             rs = prepStmt.executeQuery();
             while (rs.next()) {
 
@@ -123,7 +122,7 @@ public class ClienteDAOImpl implements ClienteDAO {
                 cliente.setId(rs.getInt("idt_cliente"));
 
                 cliente.setPessoa(pessoa);
-                
+
                 clientes.add(cliente);
             }
         } catch (Exception e) {
