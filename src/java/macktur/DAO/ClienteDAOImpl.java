@@ -62,6 +62,7 @@ public class ClienteDAOImpl implements ClienteDAO {
             prepStmt.executeUpdate();
             Integer i = null;
             ResultSet rs = prepStmt.getGeneratedKeys();
+            rs.next();
             i = rs.getInt(1);
 
             //Inserir cliente - repete o mesmo prepStmt

@@ -30,6 +30,8 @@
             Date dat = new Date();            
             String dataCadastro = dateFormat.format(dat);
             
+            request.getSession().setAttribute("dat_cadastro", dataCadastro);
+            
             if (cliente.getPessoa() != null) {
                 request.getSession().setAttribute("cliente_existe", "1");
                 readonly = "true";

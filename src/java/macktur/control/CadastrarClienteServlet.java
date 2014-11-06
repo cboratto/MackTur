@@ -29,7 +29,9 @@ public class CadastrarClienteServlet extends AbstractApplicationController {
         Pessoa  pessoa  = new Pessoa();
         pessoa.setNome(getRequest().getParameter("nome"));
         pessoa.setCpf(getRequest().getParameter("cpf"));
+        pessoa.setDataNascimento(getRequest().getParameter("dat_nasc"));
         cliente.setEmail(getRequest().getParameter("email"));
+        cliente.setDataCadastro((String)getRequest().getSession().getAttribute("dat_cadastro"));
         cliente.setPessoa(pessoa);
         
         //Voo escolhido
@@ -40,6 +42,7 @@ public class CadastrarClienteServlet extends AbstractApplicationController {
         //retorna o id do usuario
         if (usuarioExiste.equals("0")) {
             clientebd.insert(cliente);
+            cliente = clientebd.findCPF(cliente.getPessoa().getCpf()); 
         }
         else {
             String cpf = cliente.getPessoa().getCpf();

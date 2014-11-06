@@ -14,8 +14,17 @@ public class ETicket {
     private int id;
     private Reserva reserva;
     private String codReserva;
+    private String flgReservaConfirmada;
 
     public ETicket() {
+    }
+
+    public String getFlgReservaConfirmada() {
+        return flgReservaConfirmada;
+    }
+
+    public void setFlgReservaConfirmada(String flgReservaConfirmada) {
+        this.flgReservaConfirmada = flgReservaConfirmada;
     }
 
     public int getId() {
