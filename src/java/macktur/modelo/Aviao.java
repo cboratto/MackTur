@@ -15,6 +15,11 @@ public class Aviao {
     AviaoTipo aviaoTipo;
     String nomeAviao;
 
+    public Aviao() {
+    }
+
+    ;
+    
     public Aviao(int idtAviao, AviaoTipo aviaoTipo, String nomeAviao) {
         this.idtAviao = idtAviao;
         this.aviaoTipo = aviaoTipo;

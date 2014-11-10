@@ -31,13 +31,18 @@ public class BuscaServlet extends AbstractApplicationController {
             
             if (eticket.getFlgReservaConfirmada()==null){
                 //envia para pagina dizendo que não existe reserva com este código
-                this.setReturnPage("/lista_eticket.jsp");
+                this.setReturnPage("/lista_eticket_notfound.jsp");
+                
             }else if (eticket.getFlgReservaConfirmada().equals("N")){
                 eticket.setFlgReservaConfirmada("S");
                 eticketbd.update(eticket);
-                this.setReturnPage("/lista_eticket.jsp");
+                
+                getRequest().setAttribute("eticket", eticket);
+                
+                this.setReturnPage("/lista_eticket_sucesso.jsp");
             }else if (eticket.getFlgReservaConfirmada().equals("S")){
-                this.setReturnPage("/lista_eticket.jsp");
+                this.setReturnPage("/lista_eticket_sucesso.jsp");
+                getRequest().setAttribute("eticket", eticket);
             }
             
             this.getRequest().setAttribute("eticket", eticket);

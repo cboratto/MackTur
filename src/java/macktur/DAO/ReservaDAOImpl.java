@@ -17,7 +17,7 @@ import macktur.modelo.Reserva;
 public class ReservaDAOImpl implements ReservaDAO {
 
     protected static String INSERT_RESERVA_SQL = "insert into reserva (idt_voo, idt_cliente) values (?, ?)";
-    protected static String INSERT_ETICKET_SQL = "insert into eticket (idt_reserva, cod_eticket) values ( ? ,? )";
+    protected static String INSERT_ETICKET_SQL = "insert into eticket (idt_reserva, cod_eticket, flg_reserva_confirmada) values ( ? ,?, ? )";
 
     public ETicket insertEticket(Reserva r) {
         Connection conn = null;
@@ -42,6 +42,8 @@ public class ReservaDAOImpl implements ReservaDAO {
                 prepStmt = conn.prepareStatement(INSERT_ETICKET_SQL, Statement.RETURN_GENERATED_KEYS);
                 prepStmt.setInt(1, i);
                 prepStmt.setString(2, "MT0000" + i);
+                prepStmt.setString(3, "N");
+                
                 prepStmt.executeUpdate();
 
                 eticket.setCodReserva("MT0000" + i);
